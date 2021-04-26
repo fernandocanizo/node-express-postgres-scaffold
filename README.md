@@ -1,4 +1,6 @@
-# RESTful API Node Server Boilerplate with Express and Postgresql
+# NEPS
+
+Node.js, Express, Postgresql Scaffold RESTful API server.
 
 This is a fork from
 [node-express-boilerplate](https://github.com/hagopj13/node-express-boilerplate)
@@ -6,51 +8,38 @@ and is work in progress to change Mongo by Postgresql.
 
 So go away, this is far from production-ready state. ;)
 
+## Usage
+
+Clone the repo:
+
+```bash
+git clone --depth 1 https://github.com/fernandocanizo/node-express-postgres-scaffold.git my-new-project
+cd my-new-project
+rm -rf .git
+```
+
+Install dependencies:
+
+```bash
+npm ci
+```
+
+Set environment variables:
+
+```bash
+cp .example.env .env
+```
+
+Edit `.env` and configure accordingly to your project.
+
+
 ## ToDo previous README to be edited sometime in the future
 
 A boilerplate/starter project for quickly building RESTful APIs using Node.js, Express, and Mongoose.
 
 By running a single command, you will get a production-ready Node.js app installed and fully configured on your machine. The app comes with many built-in features, such as authentication using JWT, request validation, unit and integration tests, continuous integration, docker support, API documentation, pagination, etc. For more details, check the features list below.
 
-## Quick Start
 
-To create a project, simply run:
-
-```bash
-npx create-nodejs-express-app <project-name>
-```
-
-Or
-
-```bash
-npm init nodejs-express-app <project-name>
-```
-
-## Manual Installation
-
-If you would still prefer to do the installation manually, follow these steps:
-
-Clone the repo:
-
-```bash
-git clone --depth 1 https://github.com/hagopj13/node-express-boilerplate.git
-cd node-express-boilerplate
-npx rimraf ./.git
-```
-
-Install the dependencies:
-
-```bash
-yarn install
-```
-
-Set the environment variables:
-
-```bash
-cp .env.example .env
-
-# open .env and modify the environment variables (if needed)
-```
 
 ## Table of Contents
 
@@ -78,7 +67,6 @@ cp .env.example .env
 - **Error handling**: centralized error handling mechanism
 - **API documentation**: with [swagger-jsdoc](https://github.com/Surnet/swagger-jsdoc) and [swagger-ui-express](https://github.com/scottie1984/swagger-ui-express)
 - **Process management**: advanced production process management using [PM2](https://pm2.keymetrics.io)
-- **Dependency management**: with [Yarn](https://yarnpkg.com)
 - **Environment variables**: using [dotenv](https://github.com/motdotla/dotenv) and [cross-env](https://github.com/kentcdodds/cross-env#readme)
 - **Security**: set security HTTP headers using [helmet](https://helmetjs.github.io)
 - **Santizing**: sanitize request data against xss and query injection
@@ -97,55 +85,55 @@ cp .env.example .env
 Running locally:
 
 ```bash
-yarn dev
+npm run dev
 ```
 
 Running in production:
 
 ```bash
-yarn start
+npm start
 ```
 
 Testing:
 
 ```bash
 # run all tests
-yarn test
+npm test
 
 # run all tests in watch mode
-yarn test:watch
+npm test:watch
 
 # run test coverage
-yarn coverage
+npm run coverage
 ```
 
 Docker:
 
 ```bash
 # run docker container in development mode
-yarn docker:dev
+npm run docker:dev
 
 # run docker container in production mode
-yarn docker:prod
+npm run docker:prod
 
 # run all tests in a docker container
-yarn docker:test
+npm run docker:test
 ```
 
 Linting:
 
 ```bash
 # run ESLint
-yarn lint
+npm run lint
 
 # fix ESLint errors
-yarn lint:fix
+npm run lint:fix
 
 # run prettier
-yarn prettier
+npm run prettier
 
 # fix prettier errors
-yarn prettier:fix
+npm run prettier:fix
 ```
 
 ## Environment Variables
