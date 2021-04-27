@@ -1,11 +1,13 @@
+const rfr = require('rfr');
 const jwt = require('jsonwebtoken');
 const moment = require('moment');
 const httpStatus = require('http-status');
-const config = require('../config/config');
-const userService = require('./user.service');
-const { Token } = require('../models');
-const ApiError = require('../utils/ApiError');
-const { tokenTypes } = require('../config/tokens');
+
+const config = rfr('/src/config/config');
+const userService = rfr('/src/services/user.service');
+const Token = rfr('/src/models/token.model');
+const ApiError = rfr('/src/utils/ApiError');
+const { tokenTypes } = rfr('/src/config/tokens');
 
 /**
  * Generate token

@@ -1,20 +1,24 @@
+const rfr = require('rfr');
 const request = require('supertest');
 const faker = require('faker');
 const httpStatus = require('http-status');
 const httpMocks = require('node-mocks-http');
 const moment = require('moment');
 const bcrypt = require('bcryptjs');
-const app = require('../../src/app');
-const config = require('../../src/config/config');
-const auth = require('../../src/middlewares/auth');
-const { tokenService, emailService } = require('../../src/services');
-const ApiError = require('../../src/utils/ApiError');
-const setupTestDB = require('../utils/setupTestDB');
-const { User, Token } = require('../../src/models');
-const { roleRights } = require('../../src/config/roles');
-const { tokenTypes } = require('../../src/config/tokens');
-const { userOne, admin, insertUsers } = require('../fixtures/user.fixture');
-const { userOneAccessToken, adminAccessToken } = require('../fixtures/token.fixture');
+
+const app = rfr('/src/app');
+const config = rfr('/src/config/config');
+const auth = rfr('/src/middlewares/auth');
+const tokenService = rfr('/src/services/token.service');
+const emailService = rfr('/src/services/email.service');
+const ApiError = rfr('/src/utils/ApiError');
+const setupTestDB = rfr('/tests/utils/setupTestDB');
+const User = rfr('/src/models/user.model');
+const Token = rfr('/src/models/token.model');
+const { roleRights } = rfr('/src/config/roles');
+const { tokenTypes } = rfr('/src/config/tokens');
+const { userOne, admin, insertUsers } = rfr('/tests/fixtures/user.fixture');
+const { userOneAccessToken, adminAccessToken } = rfr('/tests/fixtures/token.fixture');
 
 setupTestDB();
 

@@ -1,11 +1,13 @@
+const rfr = require('rfr');
 const request = require('supertest');
 const faker = require('faker');
 const httpStatus = require('http-status');
-const app = require('../../src/app');
-const setupTestDB = require('../utils/setupTestDB');
-const { User } = require('../../src/models');
-const { userOne, userTwo, admin, insertUsers } = require('../fixtures/user.fixture');
-const { userOneAccessToken, adminAccessToken } = require('../fixtures/token.fixture');
+
+const app = rfr('/src/app');
+const setupTestDB = rfr('/tests/utils/setupTestDB');
+const User = rfr('/src/models/user.model');
+const { userOne, userTwo, admin, insertUsers } = rfr('/tests/fixtures/user.fixture');
+const { userOneAccessToken, adminAccessToken } = rfr('/tests/fixtures/token.fixture');
 
 setupTestDB();
 

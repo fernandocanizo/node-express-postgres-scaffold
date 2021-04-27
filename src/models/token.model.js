@@ -1,6 +1,8 @@
+const rfr = require('rfr');
 const mongoose = require('mongoose');
-const { toJSON } = require('./plugins');
-const { tokenTypes } = require('../config/tokens');
+
+const toJSON = rfr('/src/models/plugins/toJSON.plugin');
+const { tokenTypes } = rfr('/src/config/tokens');
 
 const tokenSchema = mongoose.Schema(
   {

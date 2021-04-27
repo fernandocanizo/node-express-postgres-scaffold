@@ -1,5 +1,7 @@
+const rfr = require('rfr');
 const mongoose = require('mongoose');
-const { toJSON } = require('../../../../src/models/plugins');
+
+const toJSON = rfr('/src/models/plugins/toJSON.plugin');
 
 describe('toJSON plugin', () => {
   let connection;

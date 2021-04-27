@@ -1,7 +1,9 @@
+const rfr = require('rfr');
 const { Strategy: JwtStrategy, ExtractJwt } = require('passport-jwt');
-const config = require('./config');
-const { tokenTypes } = require('./tokens');
-const { User } = require('../models');
+
+const config = rfr('/src/config/config');
+const { tokenTypes } = rfr('/src/config/tokens');
+const User = rfr('/src/models/user.model');
 
 const jwtOptions = {
   secretOrKey: config.jwt.secret,

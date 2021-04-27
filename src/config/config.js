@@ -1,8 +1,9 @@
+const rfr = require('rfr');
 const dotenv = require('dotenv');
 const path = require('path');
 const Joi = require('joi');
 
-dotenv.config({ path: path.join(__dirname, '../../.env') });
+dotenv.config({ path: path.join(rfr.root, '.env') });
 
 const envVarsSchema = Joi.object()
   .keys({
