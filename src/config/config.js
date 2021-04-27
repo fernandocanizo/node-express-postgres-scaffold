@@ -1,9 +1,5 @@
-const rfr = require('rfr');
-const dotenv = require('dotenv');
-const path = require('path');
 const Joi = require('joi');
-
-dotenv.config({ path: path.join(rfr.root, '.env') });
+require('dotenv').config();
 
 const envVarsSchema = Joi.object()
   .keys({
