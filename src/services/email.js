@@ -1,8 +1,8 @@
 const rfr = require('rfr');
 const nodemailer = require('nodemailer');
+const config = require('config');
 
-const config = rfr('/src/config/config');
-const logger = rfr('/src/config/logger');
+const logger = rfr('/src/lib/logger');
 
 const transport = nodemailer.createTransport(config.email.smtp);
 /* istanbul ignore next */

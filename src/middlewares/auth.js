@@ -1,9 +1,9 @@
 const rfr = require('rfr');
 const passport = require('passport');
 const httpStatus = require('http-status');
+const config = require('config');
 
 const ApiError = rfr('/src/utils/ApiError');
-const { roleRights } = rfr('/src/config/roles');
 
 const verifyCallback = (req, resolve, reject, requiredRights) => async (err, user, info) => {
   if (err || info || !user) {
@@ -12,7 +12,7 @@ const verifyCallback = (req, resolve, reject, requiredRights) => async (err, use
   req.user = user;
 
   if (requiredRights.length) {
-    const userRights = roleRights.get(user.role);
+    const userRights = config.roleRights.get(user.role);
     const hasRequiredRights = requiredRights.every(requiredRight => userRights.includes(requiredRight));
     if (!hasRequiredRights && req.params.userId !== user.id) {
       return reject(new ApiError(httpStatus.FORBIDDEN, 'Forbidden'));

@@ -2,10 +2,10 @@ const rfr = require('rfr');
 const mongoose = require('mongoose');
 const validator = require('validator');
 const bcrypt = require('bcryptjs');
+const config = require('config');
 
 const toJson = rfr('/src/models/plugins/toJson');
 const paginate = rfr('/src/models/plugins/paginate');
-const { roles } = rfr('/src/config/roles');
 
 const userSchema = mongoose.Schema(
   {
@@ -40,7 +40,7 @@ const userSchema = mongoose.Schema(
     },
     role: {
       type: String,
-      enum: roles,
+      enum: config.roles,
       default: 'user',
     },
     isEmailVerified: {

@@ -1,7 +1,7 @@
 const rfr = require('rfr');
+const config = require('config');
 
 const { version } = rfr('/package.json');
-const config = rfr('/src/config/config');
 
 const swaggerDef = {
   openapi: '3.0.0',

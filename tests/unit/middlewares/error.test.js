@@ -2,11 +2,11 @@ const rfr = require('rfr');
 const mongoose = require('mongoose');
 const httpStatus = require('http-status');
 const httpMocks = require('node-mocks-http');
+const config = require('config');
 
 const { errorConverter, errorHandler } = rfr('/src/middlewares/error');
 const ApiError = rfr('/src/utils/ApiError');
-const config = rfr('/src/config/config');
-const logger = rfr('/src/config/logger');
+const logger = rfr('/src/lib/logger');
 
 describe('Error middlewares', () => {
   describe('Error converter', () => {

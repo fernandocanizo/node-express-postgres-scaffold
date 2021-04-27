@@ -1,9 +1,9 @@
 const rfr = require('rfr');
 const request = require('supertest');
 const httpStatus = require('http-status');
+const config = require('config');
 
 const app = rfr('/src/app');
-const config = rfr('/src/config/config');
 
 describe('Auth routes', () => {
   describe('GET /v1/docs', () => {

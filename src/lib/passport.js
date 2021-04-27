@@ -1,8 +1,7 @@
 const rfr = require('rfr');
 const { Strategy: JwtStrategy, ExtractJwt } = require('passport-jwt');
+const config = require('config');
 
-const config = rfr('/src/config/config');
-const { tokenTypes } = rfr('/src/config/tokens');
 const User = rfr('/src/models/user');
 
 const jwtOptions = {
@@ -12,7 +11,7 @@ const jwtOptions = {
 
 const jwtVerify = async (payload, done) => {
   try {
-    if (payload.type !== tokenTypes.ACCESS) {
+    if (payload.type !== config.tokenTypes.ACCESS) {
       throw new Error('Invalid token type');
     }
     const user = await User.findById(payload.sub);

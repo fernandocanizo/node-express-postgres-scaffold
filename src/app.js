@@ -1,3 +1,4 @@
+const rfr = require('rfr');
 const express = require('express');
 const helmet = require('helmet');
 const xss = require('xss-clean');
@@ -6,13 +7,14 @@ const compression = require('compression');
 const cors = require('cors');
 const passport = require('passport');
 const httpStatus = require('http-status');
-const config = require('./config/config');
-const morgan = require('./config/morgan');
-const { jwtStrategy } = require('./config/passport');
-const { authLimiter } = require('./middlewares/rateLimiter');
-const routes = require('./routes/v1');
-const { errorConverter, errorHandler } = require('./middlewares/error');
-const ApiError = require('./utils/ApiError');
+const config = require('config');
+
+const morgan = rfr('/src/lib/morgan');
+const { jwtStrategy } = rfr('/src/lib/passport');
+const { authLimiter } = rfr('/src/middlewares/rateLimiter');
+const routes = rfr('/src/routes/v1');
+const { errorConverter, errorHandler } = rfr('/src/middlewares/error');
+const ApiError = rfr('/src/utils/ApiError');
 
 const app = express();
 

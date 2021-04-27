@@ -1,8 +1,8 @@
 const rfr = require('rfr');
 const mongoose = require('mongoose');
+const config = require('config');
 
 const toJson = rfr('/src/models/plugins/toJson');
-const { tokenTypes } = rfr('/src/config/tokens');
 
 const tokenSchema = mongoose.Schema(
   {
@@ -18,7 +18,7 @@ const tokenSchema = mongoose.Schema(
     },
     type: {
       type: String,
-      enum: [tokenTypes.REFRESH, tokenTypes.RESET_PASSWORD, tokenTypes.VERIFY_EMAIL],
+      enum: [config.tokenTypes.REFRESH, config.tokenTypes.RESET_PASSWORD, config.tokenTypes.VERIFY_EMAIL],
       required: true,
     },
     expires: {
