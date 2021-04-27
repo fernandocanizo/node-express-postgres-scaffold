@@ -5,7 +5,7 @@ const httpStatus = require('http-status');
 
 const app = rfr('/src/app');
 const setupTestDb = rfr('/tests/utils/setupTestDb');
-const User = rfr('/src/models/user.model');
+const User = rfr('/src/models/user');
 const { userOne, userTwo, admin, insertUsers } = rfr('/tests/fixtures/user.fixture');
 const { userOneAccessToken, adminAccessToken } = rfr('/tests/fixtures/token.fixture');
 

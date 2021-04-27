@@ -1,9 +1,9 @@
 const rfr = require('rfr');
 const httpStatus = require('http-status');
 
-const tokenService = rfr('/src/services/token.service');
-const userService = rfr('/src/services/user.service');
-const Token = rfr('/src/models/token.model');
+const tokenService = rfr('/src/services/token');
+const userService = rfr('/src/services/user');
+const Token = rfr('/src/models/token');
 const ApiError = rfr('/src/utils/ApiError');
 const { tokenTypes } = rfr('/src/config/tokens');
 
@@ -26,7 +26,7 @@ const loginUserWithEmailAndPassword = async (email, password) => {
  * @param {string} refreshToken
  * @returns {Promise}
  */
-const logout = async (refreshToken) => {
+const logout = async refreshToken => {
   const refreshTokenDoc = await Token.findOne({ token: refreshToken, type: tokenTypes.REFRESH, blacklisted: false });
   if (!refreshTokenDoc) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Not found');
@@ -39,7 +39,7 @@ const logout = async (refreshToken) => {
  * @param {string} refreshToken
  * @returns {Promise<Object>}
  */
-const refreshAuth = async (refreshToken) => {
+const refreshAuth = async refreshToken => {
   try {
     const refreshTokenDoc = await tokenService.verifyToken(refreshToken, tokenTypes.REFRESH);
     const user = await userService.getUserById(refreshTokenDoc.user);
@@ -78,7 +78,7 @@ const resetPassword = async (resetPasswordToken, newPassword) => {
  * @param {string} verifyEmailToken
  * @returns {Promise}
  */
-const verifyEmail = async (verifyEmailToken) => {
+const verifyEmail = async verifyEmailToken => {
   try {
     const verifyEmailTokenDoc = await tokenService.verifyToken(verifyEmailToken, tokenTypes.VERIFY_EMAIL);
     const user = await userService.getUserById(verifyEmailTokenDoc.user);

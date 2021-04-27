@@ -4,7 +4,7 @@ const validator = require('validator');
 const bcrypt = require('bcryptjs');
 
 const toJson = rfr('/src/models/plugins/toJson');
-const paginate = rfr('/src/models/plugins/paginate.plugin');
+const paginate = rfr('/src/models/plugins/paginate');
 const { roles } = rfr('/src/config/roles');
 
 const userSchema = mongoose.Schema(

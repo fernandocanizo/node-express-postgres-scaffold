@@ -2,8 +2,8 @@ const rfr = require('rfr');
 const express = require('express');
 
 const validate = rfr('/src/middlewares/validate');
-const authValidation = rfr('/src/validations/auth.validation');
-const authController = rfr('/src/controllers/auth.controller');
+const authValidation = rfr('/src/validations/auth');
+const authController = rfr('/src/controllers/auth');
 const auth = rfr('/src/middlewares/auth');
 
 const router = express.Router();

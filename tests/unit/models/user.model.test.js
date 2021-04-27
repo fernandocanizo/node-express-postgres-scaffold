@@ -1,7 +1,7 @@
 const rfr = require('rfr');
 const faker = require('faker');
 
-const User = rfr('/src/models/user.model');
+const User = rfr('/src/models/user');
 
 describe('User model', () => {
   describe('User validation', () => {

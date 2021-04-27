@@ -2,7 +2,7 @@ const rfr = require('rfr');
 const mongoose = require('mongoose');
 
 const setupTestDb = rfr('/tests/utils/setupTestDb');
-const paginate = rfr('/src/models/plugins/paginate.plugin');
+const paginate = rfr('/src/models/plugins/paginate');
 
 const projectSchema = mongoose.Schema({
   name: {

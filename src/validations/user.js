@@ -1,5 +1,7 @@
+const rfr = require('rfr');
 const Joi = require('joi');
-const { password, objectId } = require('./custom.validation');
+
+const { password, objectId } = rfr('/src/validations/custom');
 
 const createUser = {
   body: Joi.object().keys({
