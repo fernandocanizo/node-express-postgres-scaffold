@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const validator = require('validator');
 const bcrypt = require('bcryptjs');
 
-const toJSON = rfr('/src/models/plugins/toJSON.plugin');
+const toJson = rfr('/src/models/plugins/toJson');
 const paginate = rfr('/src/models/plugins/paginate.plugin');
 const { roles } = rfr('/src/config/roles');
 
@@ -36,7 +36,7 @@ const userSchema = mongoose.Schema(
           throw new Error('Password must contain at least one letter and one number');
         }
       },
-      private: true, // used by the toJSON plugin
+      private: true, // used by the toJson plugin
     },
     role: {
       type: String,
@@ -54,7 +54,7 @@ const userSchema = mongoose.Schema(
 );
 
 // add plugin that converts mongoose to json
-userSchema.plugin(toJSON);
+userSchema.plugin(toJson);
 userSchema.plugin(paginate);
 
 /**

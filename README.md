@@ -344,7 +344,7 @@ The app also contains 2 custom mongoose plugins that you can attach to any mongo
 
 ```javascript
 const mongoose = require('mongoose');
-const { toJSON, paginate } = require('./plugins');
+const { toJson, paginate } = require('./plugins');
 
 const userSchema = mongoose.Schema(
   {
@@ -353,15 +353,15 @@ const userSchema = mongoose.Schema(
   { timestamps: true }
 );
 
-userSchema.plugin(toJSON);
+userSchema.plugin(toJson);
 userSchema.plugin(paginate);
 
 const User = mongoose.model('User', userSchema);
 ```
 
-### toJSON
+### toJson
 
-The toJSON plugin applies the following changes in the toJSON transform call:
+The toJson plugin applies the following changes in the toJson transform call:
 
 - removes \_\_v, createdAt, updatedAt, and any schema path that has private: true
 - replaces \_id with id

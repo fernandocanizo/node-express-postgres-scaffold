@@ -4,12 +4,12 @@ const faker = require('faker');
 const httpStatus = require('http-status');
 
 const app = rfr('/src/app');
-const setupTestDB = rfr('/tests/utils/setupTestDB');
+const setupTestDb = rfr('/tests/utils/setupTestDb');
 const User = rfr('/src/models/user.model');
 const { userOne, userTwo, admin, insertUsers } = rfr('/tests/fixtures/user.fixture');
 const { userOneAccessToken, adminAccessToken } = rfr('/tests/fixtures/token.fixture');
 
-setupTestDB();
+setupTestDb();
 
 describe('User routes', () => {
   describe('POST /v1/users', () => {

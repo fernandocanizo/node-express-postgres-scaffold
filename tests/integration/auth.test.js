@@ -12,7 +12,7 @@ const auth = rfr('/src/middlewares/auth');
 const tokenService = rfr('/src/services/token.service');
 const emailService = rfr('/src/services/email.service');
 const ApiError = rfr('/src/utils/ApiError');
-const setupTestDB = rfr('/tests/utils/setupTestDB');
+const setupTestDb = rfr('/tests/utils/setupTestDb');
 const User = rfr('/src/models/user.model');
 const Token = rfr('/src/models/token.model');
 const { roleRights } = rfr('/src/config/roles');
@@ -20,7 +20,7 @@ const { tokenTypes } = rfr('/src/config/tokens');
 const { userOne, admin, insertUsers } = rfr('/tests/fixtures/user.fixture');
 const { userOneAccessToken, adminAccessToken } = rfr('/tests/fixtures/token.fixture');
 
-setupTestDB();
+setupTestDb();
 
 describe('Auth routes', () => {
   describe('POST /v1/auth/register', () => {

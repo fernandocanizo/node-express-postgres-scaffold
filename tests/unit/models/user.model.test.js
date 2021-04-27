@@ -45,15 +45,15 @@ describe('User model', () => {
     });
   });
 
-  describe('User toJSON()', () => {
-    test('should not return user password when toJSON is called', () => {
+  describe('User toJson()', () => {
+    test('should not return user password when toJson is called', () => {
       const newUser = {
         name: faker.name.findName(),
         email: faker.internet.email().toLowerCase(),
         password: 'password1',
         role: 'user',
       };
-      expect(new User(newUser).toJSON()).not.toHaveProperty('password');
+      expect(new User(newUser).toJson()).not.toHaveProperty('password');
     });
   });
 });
