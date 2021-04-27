@@ -5,9 +5,9 @@ const httpStatus = require('http-status');
 const httpMocks = require('node-mocks-http');
 const moment = require('moment');
 const bcrypt = require('bcryptjs');
+const config = require('config');
 
 const app = rfr('/src/app');
-const config = rfr('/src/config/config');
 const auth = rfr('/src/middlewares/auth');
 const tokenService = rfr('/src/services/token');
 const emailService = rfr('/src/services/email');
@@ -15,8 +15,6 @@ const ApiError = rfr('/src/utils/ApiError');
 const setupTestDb = rfr('/tests/utils/setupTestDb');
 const User = rfr('/src/models/user');
 const Token = rfr('/src/models/token');
-const { roleRights } = rfr('/src/config/roles');
-const { tokenTypes } = rfr('/src/config/tokens');
 const { userOne, admin, insertUsers } = rfr('/tests/fixtures/user.fixture');
 const { userOneAccessToken, adminAccessToken } = rfr('/tests/fixtures/token.fixture');
 
@@ -138,8 +136,8 @@ describe('Auth routes', () => {
     test('should return 204 if refresh token is valid', async () => {
       await insertUsers([userOne]);
       const expires = moment().add(config.jwt.refreshExpirationDays, 'days');
-      const refreshToken = tokenService.generateToken(userOne._id, expires, tokenTypes.REFRESH);
-      await tokenService.saveToken(refreshToken, userOne._id, expires, tokenTypes.REFRESH);
+      const refreshToken = tokenService.generateToken(userOne._id, expires, config.tokenTypes.REFRESH);
+      await tokenService.saveToken(refreshToken, userOne._id, expires, config.tokenTypes.REFRESH);
 
       await request(app).post('/v1/auth/logout').send({ refreshToken }).expect(httpStatus.NO_CONTENT);
 
@@ -154,7 +152,7 @@ describe('Auth routes', () => {
     test('should return 404 error if refresh token is not found in the database', async () => {
       await insertUsers([userOne]);
       const expires = moment().add(config.jwt.refreshExpirationDays, 'days');
-      const refreshToken = tokenService.generateToken(userOne._id, expires, tokenTypes.REFRESH);
+      const refreshToken = tokenService.generateToken(userOne._id, expires, config.tokenTypes.REFRESH);
 
       await request(app).post('/v1/auth/logout').send({ refreshToken }).expect(httpStatus.NOT_FOUND);
     });
@@ -162,8 +160,8 @@ describe('Auth routes', () => {
     test('should return 404 error if refresh token is blacklisted', async () => {
       await insertUsers([userOne]);
       const expires = moment().add(config.jwt.refreshExpirationDays, 'days');
-      const refreshToken = tokenService.generateToken(userOne._id, expires, tokenTypes.REFRESH);
-      await tokenService.saveToken(refreshToken, userOne._id, expires, tokenTypes.REFRESH, true);
+      const refreshToken = tokenService.generateToken(userOne._id, expires, config.tokenTypes.REFRESH);
+      await tokenService.saveToken(refreshToken, userOne._id, expires, config.tokenTypes.REFRESH, true);
 
       await request(app).post('/v1/auth/logout').send({ refreshToken }).expect(httpStatus.NOT_FOUND);
     });
@@ -173,8 +171,8 @@ describe('Auth routes', () => {
     test('should return 200 and new auth tokens if refresh token is valid', async () => {
       await insertUsers([userOne]);
       const expires = moment().add(config.jwt.refreshExpirationDays, 'days');
-      const refreshToken = tokenService.generateToken(userOne._id, expires, tokenTypes.REFRESH);
-      await tokenService.saveToken(refreshToken, userOne._id, expires, tokenTypes.REFRESH);
+      const refreshToken = tokenService.generateToken(userOne._id, expires, config.tokenTypes.REFRESH);
+      await tokenService.saveToken(refreshToken, userOne._id, expires, config.tokenTypes.REFRESH);
 
       const res = await request(app).post('/v1/auth/refresh-tokens').send({ refreshToken }).expect(httpStatus.OK);
 
@@ -184,7 +182,7 @@ describe('Auth routes', () => {
       });
 
       const dbRefreshTokenDoc = await Token.findOne({ token: res.body.refresh.token });
-      expect(dbRefreshTokenDoc).toMatchObject({ type: tokenTypes.REFRESH, user: userOne._id, blacklisted: false });
+      expect(dbRefreshTokenDoc).toMatchObject({ type: config.tokenTypes.REFRESH, user: userOne._id, blacklisted: false });
 
       const dbRefreshTokenCount = await Token.countDocuments();
       expect(dbRefreshTokenCount).toBe(1);
@@ -197,8 +195,8 @@ describe('Auth routes', () => {
     test('should return 401 error if refresh token is signed using an invalid secret', async () => {
       await insertUsers([userOne]);
       const expires = moment().add(config.jwt.refreshExpirationDays, 'days');
-      const refreshToken = tokenService.generateToken(userOne._id, expires, tokenTypes.REFRESH, 'invalidSecret');
-      await tokenService.saveToken(refreshToken, userOne._id, expires, tokenTypes.REFRESH);
+      const refreshToken = tokenService.generateToken(userOne._id, expires, config.tokenTypes.REFRESH, 'invalidSecret');
+      await tokenService.saveToken(refreshToken, userOne._id, expires, config.tokenTypes.REFRESH);
 
       await request(app).post('/v1/auth/refresh-tokens').send({ refreshToken }).expect(httpStatus.UNAUTHORIZED);
     });
@@ -206,7 +204,7 @@ describe('Auth routes', () => {
     test('should return 401 error if refresh token is not found in the database', async () => {
       await insertUsers([userOne]);
       const expires = moment().add(config.jwt.refreshExpirationDays, 'days');
-      const refreshToken = tokenService.generateToken(userOne._id, expires, tokenTypes.REFRESH);
+      const refreshToken = tokenService.generateToken(userOne._id, expires, config.tokenTypes.REFRESH);
 
       await request(app).post('/v1/auth/refresh-tokens').send({ refreshToken }).expect(httpStatus.UNAUTHORIZED);
     });
@@ -214,8 +212,8 @@ describe('Auth routes', () => {
     test('should return 401 error if refresh token is blacklisted', async () => {
       await insertUsers([userOne]);
       const expires = moment().add(config.jwt.refreshExpirationDays, 'days');
-      const refreshToken = tokenService.generateToken(userOne._id, expires, tokenTypes.REFRESH);
-      await tokenService.saveToken(refreshToken, userOne._id, expires, tokenTypes.REFRESH, true);
+      const refreshToken = tokenService.generateToken(userOne._id, expires, config.tokenTypes.REFRESH);
+      await tokenService.saveToken(refreshToken, userOne._id, expires, config.tokenTypes.REFRESH, true);
 
       await request(app).post('/v1/auth/refresh-tokens').send({ refreshToken }).expect(httpStatus.UNAUTHORIZED);
     });
@@ -224,15 +222,15 @@ describe('Auth routes', () => {
       await insertUsers([userOne]);
       const expires = moment().subtract(1, 'minutes');
       const refreshToken = tokenService.generateToken(userOne._id, expires);
-      await tokenService.saveToken(refreshToken, userOne._id, expires, tokenTypes.REFRESH);
+      await tokenService.saveToken(refreshToken, userOne._id, expires, config.tokenTypes.REFRESH);
 
       await request(app).post('/v1/auth/refresh-tokens').send({ refreshToken }).expect(httpStatus.UNAUTHORIZED);
     });
 
     test('should return 401 error if user is not found', async () => {
       const expires = moment().add(config.jwt.refreshExpirationDays, 'days');
-      const refreshToken = tokenService.generateToken(userOne._id, expires, tokenTypes.REFRESH);
-      await tokenService.saveToken(refreshToken, userOne._id, expires, tokenTypes.REFRESH);
+      const refreshToken = tokenService.generateToken(userOne._id, expires, config.tokenTypes.REFRESH);
+      await tokenService.saveToken(refreshToken, userOne._id, expires, config.tokenTypes.REFRESH);
 
       await request(app).post('/v1/auth/refresh-tokens').send({ refreshToken }).expect(httpStatus.UNAUTHORIZED);
     });
@@ -270,8 +268,8 @@ describe('Auth routes', () => {
     test('should return 204 and reset the password', async () => {
       await insertUsers([userOne]);
       const expires = moment().add(config.jwt.resetPasswordExpirationMinutes, 'minutes');
-      const resetPasswordToken = tokenService.generateToken(userOne._id, expires, tokenTypes.RESET_PASSWORD);
-      await tokenService.saveToken(resetPasswordToken, userOne._id, expires, tokenTypes.RESET_PASSWORD);
+      const resetPasswordToken = tokenService.generateToken(userOne._id, expires, config.tokenTypes.RESET_PASSWORD);
+      await tokenService.saveToken(resetPasswordToken, userOne._id, expires, config.tokenTypes.RESET_PASSWORD);
 
       await request(app)
         .post('/v1/auth/reset-password')
@@ -283,7 +281,10 @@ describe('Auth routes', () => {
       const isPasswordMatch = await bcrypt.compare('password2', dbUser.password);
       expect(isPasswordMatch).toBe(true);
 
-      const dbResetPasswordTokenCount = await Token.countDocuments({ user: userOne._id, type: tokenTypes.RESET_PASSWORD });
+      const dbResetPasswordTokenCount = await Token.countDocuments({
+        user: userOne._id,
+        type: config.tokenTypes.RESET_PASSWORD,
+      });
       expect(dbResetPasswordTokenCount).toBe(0);
     });
 
@@ -296,8 +297,8 @@ describe('Auth routes', () => {
     test('should return 401 if reset password token is blacklisted', async () => {
       await insertUsers([userOne]);
       const expires = moment().add(config.jwt.resetPasswordExpirationMinutes, 'minutes');
-      const resetPasswordToken = tokenService.generateToken(userOne._id, expires, tokenTypes.RESET_PASSWORD);
-      await tokenService.saveToken(resetPasswordToken, userOne._id, expires, tokenTypes.RESET_PASSWORD, true);
+      const resetPasswordToken = tokenService.generateToken(userOne._id, expires, config.tokenTypes.RESET_PASSWORD);
+      await tokenService.saveToken(resetPasswordToken, userOne._id, expires, config.tokenTypes.RESET_PASSWORD, true);
 
       await request(app)
         .post('/v1/auth/reset-password')
@@ -309,8 +310,8 @@ describe('Auth routes', () => {
     test('should return 401 if reset password token is expired', async () => {
       await insertUsers([userOne]);
       const expires = moment().subtract(1, 'minutes');
-      const resetPasswordToken = tokenService.generateToken(userOne._id, expires, tokenTypes.RESET_PASSWORD);
-      await tokenService.saveToken(resetPasswordToken, userOne._id, expires, tokenTypes.RESET_PASSWORD);
+      const resetPasswordToken = tokenService.generateToken(userOne._id, expires, config.tokenTypes.RESET_PASSWORD);
+      await tokenService.saveToken(resetPasswordToken, userOne._id, expires, config.tokenTypes.RESET_PASSWORD);
 
       await request(app)
         .post('/v1/auth/reset-password')
@@ -321,8 +322,8 @@ describe('Auth routes', () => {
 
     test('should return 401 if user is not found', async () => {
       const expires = moment().add(config.jwt.resetPasswordExpirationMinutes, 'minutes');
-      const resetPasswordToken = tokenService.generateToken(userOne._id, expires, tokenTypes.RESET_PASSWORD);
-      await tokenService.saveToken(resetPasswordToken, userOne._id, expires, tokenTypes.RESET_PASSWORD);
+      const resetPasswordToken = tokenService.generateToken(userOne._id, expires, config.tokenTypes.RESET_PASSWORD);
+      await tokenService.saveToken(resetPasswordToken, userOne._id, expires, config.tokenTypes.RESET_PASSWORD);
 
       await request(app)
         .post('/v1/auth/reset-password')
@@ -334,8 +335,8 @@ describe('Auth routes', () => {
     test('should return 400 if password is missing or invalid', async () => {
       await insertUsers([userOne]);
       const expires = moment().add(config.jwt.resetPasswordExpirationMinutes, 'minutes');
-      const resetPasswordToken = tokenService.generateToken(userOne._id, expires, tokenTypes.RESET_PASSWORD);
-      await tokenService.saveToken(resetPasswordToken, userOne._id, expires, tokenTypes.RESET_PASSWORD);
+      const resetPasswordToken = tokenService.generateToken(userOne._id, expires, config.tokenTypes.RESET_PASSWORD);
+      await tokenService.saveToken(resetPasswordToken, userOne._id, expires, config.tokenTypes.RESET_PASSWORD);
 
       await request(app).post('/v1/auth/reset-password').query({ token: resetPasswordToken }).expect(httpStatus.BAD_REQUEST);
 
@@ -392,7 +393,7 @@ describe('Auth routes', () => {
       await insertUsers([userOne]);
       const expires = moment().add(config.jwt.verifyEmailExpirationMinutes, 'minutes');
       const verifyEmailToken = tokenService.generateToken(userOne._id, expires);
-      await tokenService.saveToken(verifyEmailToken, userOne._id, expires, tokenTypes.VERIFY_EMAIL);
+      await tokenService.saveToken(verifyEmailToken, userOne._id, expires, config.tokenTypes.VERIFY_EMAIL);
 
       await request(app)
         .post('/v1/auth/verify-email')
@@ -406,7 +407,7 @@ describe('Auth routes', () => {
 
       const dbVerifyEmailToken = await Token.countDocuments({
         user: userOne._id,
-        type: tokenTypes.VERIFY_EMAIL,
+        type: config.tokenTypes.VERIFY_EMAIL,
       });
       expect(dbVerifyEmailToken).toBe(0);
     });
@@ -421,7 +422,7 @@ describe('Auth routes', () => {
       await insertUsers([userOne]);
       const expires = moment().add(config.jwt.verifyEmailExpirationMinutes, 'minutes');
       const verifyEmailToken = tokenService.generateToken(userOne._id, expires);
-      await tokenService.saveToken(verifyEmailToken, userOne._id, expires, tokenTypes.VERIFY_EMAIL, true);
+      await tokenService.saveToken(verifyEmailToken, userOne._id, expires, config.tokenTypes.VERIFY_EMAIL, true);
 
       await request(app)
         .post('/v1/auth/verify-email')
@@ -434,7 +435,7 @@ describe('Auth routes', () => {
       await insertUsers([userOne]);
       const expires = moment().subtract(1, 'minutes');
       const verifyEmailToken = tokenService.generateToken(userOne._id, expires);
-      await tokenService.saveToken(verifyEmailToken, userOne._id, expires, tokenTypes.VERIFY_EMAIL);
+      await tokenService.saveToken(verifyEmailToken, userOne._id, expires, config.tokenTypes.VERIFY_EMAIL);
 
       await request(app)
         .post('/v1/auth/verify-email')
@@ -446,7 +447,7 @@ describe('Auth routes', () => {
     test('should return 401 if user is not found', async () => {
       const expires = moment().add(config.jwt.verifyEmailExpirationMinutes, 'minutes');
       const verifyEmailToken = tokenService.generateToken(userOne._id, expires);
-      await tokenService.saveToken(verifyEmailToken, userOne._id, expires, tokenTypes.VERIFY_EMAIL);
+      await tokenService.saveToken(verifyEmailToken, userOne._id, expires, config.tokenTypes.VERIFY_EMAIL);
 
       await request(app)
         .post('/v1/auth/verify-email')
@@ -498,7 +499,7 @@ describe('Auth middleware', () => {
   test('should call next with unauthorized error if the token is not an access token', async () => {
     await insertUsers([userOne]);
     const expires = moment().add(config.jwt.accessExpirationMinutes, 'minutes');
-    const refreshToken = tokenService.generateToken(userOne._id, expires, tokenTypes.REFRESH);
+    const refreshToken = tokenService.generateToken(userOne._id, expires, config.tokenTypes.REFRESH);
     const req = httpMocks.createRequest({ headers: { Authorization: `Bearer ${refreshToken}` } });
     const next = jest.fn();
 
@@ -513,7 +514,7 @@ describe('Auth middleware', () => {
   test('should call next with unauthorized error if access token is generated with an invalid secret', async () => {
     await insertUsers([userOne]);
     const expires = moment().add(config.jwt.accessExpirationMinutes, 'minutes');
-    const accessToken = tokenService.generateToken(userOne._id, expires, tokenTypes.ACCESS, 'invalidSecret');
+    const accessToken = tokenService.generateToken(userOne._id, expires, config.tokenTypes.ACCESS, 'invalidSecret');
     const req = httpMocks.createRequest({ headers: { Authorization: `Bearer ${accessToken}` } });
     const next = jest.fn();
 
@@ -528,7 +529,7 @@ describe('Auth middleware', () => {
   test('should call next with unauthorized error if access token is expired', async () => {
     await insertUsers([userOne]);
     const expires = moment().subtract(1, 'minutes');
-    const accessToken = tokenService.generateToken(userOne._id, expires, tokenTypes.ACCESS);
+    const accessToken = tokenService.generateToken(userOne._id, expires, config.tokenTypes.ACCESS);
     const req = httpMocks.createRequest({ headers: { Authorization: `Bearer ${accessToken}` } });
     const next = jest.fn();
 
@@ -584,7 +585,7 @@ describe('Auth middleware', () => {
     });
     const next = jest.fn();
 
-    await auth(...roleRights.get('admin'))(req, httpMocks.createResponse(), next);
+    await auth(...config.roleRights.get('admin'))(req, httpMocks.createResponse(), next);
 
     expect(next).toHaveBeenCalledWith();
   });

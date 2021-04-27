@@ -1,9 +1,9 @@
 const rfr = require('rfr');
 const mongoose = require('mongoose');
 const httpStatus = require('http-status');
+const config = require('config');
 
-const config = rfr('/src/config/config');
-const logger = rfr('/src/config/logger');
+const logger = rfr('/src/lib/logger');
 const ApiError = rfr('/src/utils/ApiError');
 
 const errorConverter = (err, req, res, next) => {

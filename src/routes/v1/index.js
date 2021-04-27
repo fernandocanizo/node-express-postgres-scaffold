@@ -1,10 +1,10 @@
 const rfr = require('rfr');
 const express = require('express');
+const config = require('config');
 
 const authRoute = rfr('/src/routes/v1/auth');
 const userRoute = rfr('/src/routes/v1/user');
 const docsRoute = rfr('/src/routes/v1/docs');
-const config = rfr('/src/config/config');
 
 const router = express.Router();
 
