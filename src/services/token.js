@@ -4,8 +4,8 @@ const moment = require('moment');
 const httpStatus = require('http-status');
 
 const config = rfr('/src/config/config');
-const userService = rfr('/src/services/user.service');
-const Token = rfr('/src/models/token.model');
+const userService = rfr('/src/services/user');
+const Token = rfr('/src/models/token');
 const ApiError = rfr('/src/utils/ApiError');
 const { tokenTypes } = rfr('/src/config/tokens');
 
@@ -66,7 +66,7 @@ const verifyToken = async (token, type) => {
  * @param {User} user
  * @returns {Promise<Object>}
  */
-const generateAuthTokens = async (user) => {
+const generateAuthTokens = async user => {
   const accessTokenExpires = moment().add(config.jwt.accessExpirationMinutes, 'minutes');
   const accessToken = generateToken(user.id, accessTokenExpires, tokenTypes.ACCESS);
 
@@ -91,7 +91,7 @@ const generateAuthTokens = async (user) => {
  * @param {string} email
  * @returns {Promise<string>}
  */
-const generateResetPasswordToken = async (email) => {
+const generateResetPasswordToken = async email => {
   const user = await userService.getUserByEmail(email);
   if (!user) {
     throw new ApiError(httpStatus.NOT_FOUND, 'No users found with this email');
@@ -107,7 +107,7 @@ const generateResetPasswordToken = async (email) => {
  * @param {string} email
  * @returns {Promise<string>}
  */
-const generateVerifyEmailToken = async (user) => {
+const generateVerifyEmailToken = async user => {
   const expires = moment().add(config.jwt.verifyEmailExpirationMinutes, 'minutes');
   const verifyEmailToken = generateToken(user.id, expires, tokenTypes.VERIFY_EMAIL);
   await saveToken(verifyEmailToken, user.id, expires, tokenTypes.VERIFY_EMAIL);

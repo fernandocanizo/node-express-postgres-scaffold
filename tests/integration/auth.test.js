@@ -9,18 +9,18 @@ const bcrypt = require('bcryptjs');
 const app = rfr('/src/app');
 const config = rfr('/src/config/config');
 const auth = rfr('/src/middlewares/auth');
-const tokenService = rfr('/src/services/token.service');
-const emailService = rfr('/src/services/email.service');
+const tokenService = rfr('/src/services/token');
+const emailService = rfr('/src/services/email');
 const ApiError = rfr('/src/utils/ApiError');
-const setupTestDB = rfr('/tests/utils/setupTestDB');
-const User = rfr('/src/models/user.model');
-const Token = rfr('/src/models/token.model');
+const setupTestDb = rfr('/tests/utils/setupTestDb');
+const User = rfr('/src/models/user');
+const Token = rfr('/src/models/token');
 const { roleRights } = rfr('/src/config/roles');
 const { tokenTypes } = rfr('/src/config/tokens');
 const { userOne, admin, insertUsers } = rfr('/tests/fixtures/user.fixture');
 const { userOneAccessToken, adminAccessToken } = rfr('/tests/fixtures/token.fixture');
 
-setupTestDB();
+setupTestDb();
 
 describe('Auth routes', () => {
   describe('POST /v1/auth/register', () => {

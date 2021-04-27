@@ -1,8 +1,8 @@
 const rfr = require('rfr');
 const mongoose = require('mongoose');
 
-const setupTestDB = rfr('/tests/utils/setupTestDB');
-const paginate = rfr('/src/models/plugins/paginate.plugin');
+const setupTestDb = rfr('/tests/utils/setupTestDb');
+const paginate = rfr('/src/models/plugins/paginate');
 
 const projectSchema = mongoose.Schema({
   name: {
@@ -35,7 +35,7 @@ const taskSchema = mongoose.Schema({
 taskSchema.plugin(paginate);
 const Task = mongoose.model('Task', taskSchema);
 
-setupTestDB();
+setupTestDb();
 
 describe('paginate plugin', () => {
   describe('populate option', () => {

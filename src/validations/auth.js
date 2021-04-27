@@ -1,5 +1,7 @@
+const rfr = require('rfr');
 const Joi = require('joi');
-const { password } = require('./custom.validation');
+
+const { password } = rfr('/src/validations/custom');
 
 const register = {
   body: Joi.object().keys({

@@ -3,7 +3,7 @@ const moment = require('moment');
 
 const config = rfr('/src/config/config');
 const { tokenTypes } = rfr('/src/config/tokens');
-const tokenService = rfr('/src/services/token.service');
+const tokenService = rfr('/src/services/token');
 const { userOne, admin } = rfr('/tests/fixtures/user.fixture');
 
 const accessTokenExpires = moment().add(config.jwt.accessExpirationMinutes, 'minutes');

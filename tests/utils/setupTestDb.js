@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 
 const config = rfr('/src/config/config');
 
-const setupTestDB = () => {
+const setupTestDb = () => {
   beforeAll(async () => {
     await mongoose.connect(config.mongoose.url, config.mongoose.options);
   });
@@ -17,4 +17,4 @@ const setupTestDB = () => {
   });
 };
 
-module.exports = setupTestDB;
+module.exports = setupTestDb;

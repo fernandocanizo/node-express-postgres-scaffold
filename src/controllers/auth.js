@@ -2,10 +2,10 @@ const rfr = require('rfr');
 const httpStatus = require('http-status');
 
 const catchAsync = rfr('/src/utils/catchAsync');
-const authService = rfr('/src/services/auth.service');
-const userService = rfr('/src/services/user.service');
-const tokenService = rfr('/src/services.token.service');
-const emailService = rfr('/src/services/email.service');
+const authService = rfr('/src/services/auth');
+const userService = rfr('/src/services/user');
+const tokenService = rfr('/src/services/token');
+const emailService = rfr('/src/services/email');
 
 const register = catchAsync(async (req, res) => {
   const user = await userService.createUser(req.body);

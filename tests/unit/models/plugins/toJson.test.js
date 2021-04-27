@@ -1,9 +1,9 @@
 const rfr = require('rfr');
 const mongoose = require('mongoose');
 
-const toJSON = rfr('/src/models/plugins/toJSON.plugin');
+const toJson = rfr('/src/models/plugins/toJson');
 
-describe('toJSON plugin', () => {
+describe('toJson plugin', () => {
   let connection;
 
   beforeEach(() => {
@@ -12,28 +12,28 @@ describe('toJSON plugin', () => {
 
   it('should replace _id with id', () => {
     const schema = mongoose.Schema();
-    schema.plugin(toJSON);
+    schema.plugin(toJson);
     const Model = connection.model('Model', schema);
     const doc = new Model();
-    expect(doc.toJSON()).not.toHaveProperty('_id');
-    expect(doc.toJSON()).toHaveProperty('id', doc._id.toString());
+    expect(doc.toJson()).not.toHaveProperty('_id');
+    expect(doc.toJson()).toHaveProperty('id', doc._id.toString());
   });
 
   it('should remove __v', () => {
     const schema = mongoose.Schema();
-    schema.plugin(toJSON);
+    schema.plugin(toJson);
     const Model = connection.model('Model', schema);
     const doc = new Model();
-    expect(doc.toJSON()).not.toHaveProperty('__v');
+    expect(doc.toJson()).not.toHaveProperty('__v');
   });
 
   it('should remove createdAt and updatedAt', () => {
     const schema = mongoose.Schema({}, { timestamps: true });
-    schema.plugin(toJSON);
+    schema.plugin(toJson);
     const Model = connection.model('Model', schema);
     const doc = new Model();
-    expect(doc.toJSON()).not.toHaveProperty('createdAt');
-    expect(doc.toJSON()).not.toHaveProperty('updatedAt');
+    expect(doc.toJson()).not.toHaveProperty('createdAt');
+    expect(doc.toJson()).not.toHaveProperty('updatedAt');
   });
 
   it('should remove any path set as private', () => {
@@ -41,11 +41,11 @@ describe('toJSON plugin', () => {
       public: { type: String },
       private: { type: String, private: true },
     });
-    schema.plugin(toJSON);
+    schema.plugin(toJson);
     const Model = connection.model('Model', schema);
     const doc = new Model({ public: 'some public value', private: 'some private value' });
-    expect(doc.toJSON()).not.toHaveProperty('private');
-    expect(doc.toJSON()).toHaveProperty('public');
+    expect(doc.toJson()).not.toHaveProperty('private');
+    expect(doc.toJson()).toHaveProperty('public');
   });
 
   it('should remove any nested paths set as private', () => {
@@ -55,7 +55,7 @@ describe('toJSON plugin', () => {
         private: { type: String, private: true },
       },
     });
-    schema.plugin(toJSON);
+    schema.plugin(toJson);
     const Model = connection.model('Model', schema);
     const doc = new Model({
       public: 'some public value',
@@ -63,18 +63,18 @@ describe('toJSON plugin', () => {
         private: 'some nested private value',
       },
     });
-    expect(doc.toJSON()).not.toHaveProperty('nested.private');
-    expect(doc.toJSON()).toHaveProperty('public');
+    expect(doc.toJson()).not.toHaveProperty('nested.private');
+    expect(doc.toJson()).toHaveProperty('public');
   });
 
-  it('should also call the schema toJSON transform function', () => {
+  it('should also call the schema toJson transform function', () => {
     const schema = mongoose.Schema(
       {
         public: { type: String },
         private: { type: String },
       },
       {
-        toJSON: {
+        toJson: {
           transform: (doc, ret) => {
             // eslint-disable-next-line no-param-reassign
             delete ret.private;
@@ -82,10 +82,10 @@ describe('toJSON plugin', () => {
         },
       }
     );
-    schema.plugin(toJSON);
+    schema.plugin(toJson);
     const Model = connection.model('Model', schema);
     const doc = new Model({ public: 'some public value', private: 'some private value' });
-    expect(doc.toJSON()).not.toHaveProperty('private');
-    expect(doc.toJSON()).toHaveProperty('public');
+    expect(doc.toJson()).not.toHaveProperty('private');
+    expect(doc.toJson()).toHaveProperty('public');
   });
 });

@@ -1,7 +1,7 @@
 const rfr = require('rfr');
 const mongoose = require('mongoose');
 
-const toJSON = rfr('/src/models/plugins/toJSON.plugin');
+const toJson = rfr('/src/models/plugins/toJson');
 const { tokenTypes } = rfr('/src/config/tokens');
 
 const tokenSchema = mongoose.Schema(
@@ -36,7 +36,7 @@ const tokenSchema = mongoose.Schema(
 );
 
 // add plugin that converts mongoose to json
-tokenSchema.plugin(toJSON);
+tokenSchema.plugin(toJson);
 
 /**
  * @typedef Token
