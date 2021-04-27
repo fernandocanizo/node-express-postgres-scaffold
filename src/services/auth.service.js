@@ -1,9 +1,11 @@
+const rfr = require('rfr');
 const httpStatus = require('http-status');
-const tokenService = require('./token.service');
-const userService = require('./user.service');
-const Token = require('../models/token.model');
-const ApiError = require('../utils/ApiError');
-const { tokenTypes } = require('../config/tokens');
+
+const tokenService = rfr('/src/services/token.service');
+const userService = rfr('/src/services/user.service');
+const Token = rfr('/src/models/token.model');
+const ApiError = rfr('/src/utils/ApiError');
+const { tokenTypes } = rfr('/src/config/tokens');
 
 /**
  * Login with username and password

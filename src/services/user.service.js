@@ -1,6 +1,8 @@
+const rfr = require('rfr');
 const httpStatus = require('http-status');
-const { User } = require('../models');
-const ApiError = require('../utils/ApiError');
+
+const User = rfr('/src/models/user.model');
+const ApiError = rfr('/src/utils/ApiError');
 
 /**
  * Create a user

@@ -1,7 +1,9 @@
+const rfr = require('rfr');
 const request = require('supertest');
 const httpStatus = require('http-status');
-const app = require('../../src/app');
-const config = require('../../src/config/config');
+
+const app = rfr('/src/app');
+const config = rfr('/src/config/config');
 
 describe('Auth routes', () => {
   describe('GET /v1/docs', () => {

@@ -1,10 +1,12 @@
+const rfr = require('rfr');
 const mongoose = require('mongoose');
 const httpStatus = require('http-status');
 const httpMocks = require('node-mocks-http');
-const { errorConverter, errorHandler } = require('../../../src/middlewares/error');
-const ApiError = require('../../../src/utils/ApiError');
-const config = require('../../../src/config/config');
-const logger = require('../../../src/config/logger');
+
+const { errorConverter, errorHandler } = rfr('/src/middlewares/error');
+const ApiError = rfr('/src/utils/ApiError');
+const config = rfr('/src/config/config');
+const logger = rfr('/src/config/logger');
 
 describe('Error middlewares', () => {
   describe('Error converter', () => {

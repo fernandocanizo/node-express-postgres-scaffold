@@ -1,8 +1,10 @@
+const rfr = require('rfr');
 const httpStatus = require('http-status');
-const pick = require('../utils/pick');
-const ApiError = require('../utils/ApiError');
-const catchAsync = require('../utils/catchAsync');
-const { userService } = require('../services');
+
+const pick = rfr('/src/utils/pick');
+const ApiError = rfr('/src/utils/ApiError');
+const catchAsync = rfr('/src/utils/catchAsync');
+const userService = rfr('/src/services/user.service');
 
 const createUser = catchAsync(async (req, res) => {
   const user = await userService.createUser(req.body);

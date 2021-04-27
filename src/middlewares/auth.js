@@ -1,7 +1,9 @@
+const rfr = require('rfr');
 const passport = require('passport');
 const httpStatus = require('http-status');
-const ApiError = require('../utils/ApiError');
-const { roleRights } = require('../config/roles');
+
+const ApiError = rfr('/src/utils/ApiError');
+const { roleRights } = rfr('/src/config/roles');
 
 const verifyCallback = (req, resolve, reject, requiredRights) => async (err, user, info) => {
   if (err || info || !user) {

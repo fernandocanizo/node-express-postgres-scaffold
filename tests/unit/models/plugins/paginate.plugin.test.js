@@ -1,6 +1,8 @@
+const rfr = require('rfr');
 const mongoose = require('mongoose');
-const setupTestDB = require('../../../utils/setupTestDB');
-const paginate = require('../../../../src/models/plugins/paginate.plugin');
+
+const setupTestDB = rfr('/tests/utils/setupTestDB');
+const paginate = rfr('/src/models/plugins/paginate.plugin');
 
 const projectSchema = mongoose.Schema({
   name: {

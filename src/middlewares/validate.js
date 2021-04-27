@@ -1,7 +1,9 @@
+const rfr = require('rfr');
 const Joi = require('joi');
 const httpStatus = require('http-status');
-const pick = require('../utils/pick');
-const ApiError = require('../utils/ApiError');
+
+const pick = rfr('/src/utils/pick');
+const ApiError = rfr('/src/utils/ApiError');
 
 const validate = (schema) => (req, res, next) => {
   const validSchema = pick(schema, ['params', 'query', 'body']);
